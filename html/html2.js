@@ -11,8 +11,13 @@ app.get('/', function(req, res) {
 
 app.get(/^(.+)$/, function(req ,resp){
 	console.log(req.params);
-	// if(fs.statSync(path.join(__dirname)))
-	resp.sendFile(req.params[0]+ '.html', {root: path.join(__dirname, '../html')});
+	try{
+		if(fs.statSync(path.join(__dirname, '../html', req.params[0]+'.html')).isFile()){
+			resp.sendFile(req.params[0]+ '.html', {root: path.join(__dirname, '../html')});
+		}
+	} catch(err) {
+		resp.sendFile('404.html', {root: path.join(__dirname, '../html')});
+	}
 });
 
 app.listen(9090,function() {
