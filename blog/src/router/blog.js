@@ -1,10 +1,13 @@
+const { getList } = require('../controller/blog')
+const { SuccessModel, ErrorModel } =require('../model/resModel')
+
 const handleBlogRouter = (req, res) => {
-    const { method, path } = req
+    const { method, path, query } = req
 
     if(method === 'GET' && path === '/api/blog/list') {
-        return {
-            msg: 'get blog list'
-        }
+        const { author = '', keyword = '' } = query
+        const listData = getList(author, keyword)
+        return new SuccessModel(listData)
     }
 
     if(method === 'GET' && path === '/api/blog/detail') {
