@@ -1,9 +1,10 @@
 const handleUserRouter = (req, res) => {
-    const { method, path } = req
+    const { method, path, body } = req
 
     if(method === 'POST' && path === '/api/user/login') {
         return {
-            msg: 'get blog list'
+            msg: 'login',
+            body
         }
     }
 }

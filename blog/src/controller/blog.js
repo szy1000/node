@@ -18,6 +18,14 @@ const getList = (author, keyword) => {
     ]
 }
 
+const getDetailById = id => {
+    return {
+        id,
+        content: 'detail',
+
+    }
+}
 module.exports = {
-    getList
+    getList,
+    getDetailById
 }
