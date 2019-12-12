@@ -25,7 +25,24 @@ const getDetailById = id => {
 
     }
 }
+
+const createNewBlog = (data = {}) => {
+    return {
+        id: 333
+    }
+}
+
+const updateBlog = (id, data = {}) => {
+    return false
+}
+
+const deleteBlogById = id => {
+    return true
+}
 module.exports = {
     getList,
-    getDetailById
+    getDetailById,
+    createNewBlog,
+    updateBlog,
+    deleteBlogById
 }
