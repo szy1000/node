@@ -6,6 +6,7 @@
   "dependencies": {
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
+    "mysql": "^2.17.1",
     "querystring": "^0.2.0"
   },
   "devDependencies": {
@@ -15,7 +16,8 @@
   },
   "scripts": {
     "test": "npm run dev",
-    "start": "cross-env NODE_ENV=dev nodemon blog/bin/www.js"
+    "start": "cross-env NODE_ENV=dev nodemon blog/bin/www.js",
+    "mysql": "cross-env NODE_ENV=dev nodemon mysql/index.js"
   },
   "repository": {
     "type": "git",
