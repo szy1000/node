@@ -39,14 +39,18 @@ const serverHandle = (req, res) => {
 
         const blogData = handleBlogRouter(req)
         const userData = handleUserRouter(req)
-
         if(blogData) {
-            res.end(JSON.stringify(blogData))
+            blogData.then(data => {
+                res.end(JSON.stringify(data))
+            })
             return
         }
 
+
         if(userData) {
-            res.end(JSON.stringify(userData))
+            userData.then(data => {
+                res.end(JSON.stringify(data))
+            })
             return
         }
 

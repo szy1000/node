@@ -1,43 +1,52 @@
+const { exce } = require('../db/mysql')
+
 const getList = (author, keyword) => {
-    return [
-        {
-            id: 1,
-            title: '1',
-            content: '内容A'
-        },
-        {
-            id: 2,
-            title: '2',
-            content: '内容A'
-        },
-        {
-            id: 3,
-            title: '3',
-            content: '内容A'
-        },
-    ]
+    let sql = `select * from blog where 1=1 `
+
+    if(author) {
+        sql += `and author='${author}' `
+    }
+    if(keyword) {
+        sql += `and title like '%${keyword}%' `
+    }
+
+    sql += `order by createtime desc;`
+    return exce(sql)
 }
 
 const getDetailById = id => {
-    return {
-        id,
-        content: 'detail',
-
-    }
+    const sql = `select * from blog where id = ${id}`
+    return exce(sql)
 }
 
 const createNewBlog = (data = {}) => {
-    return {
-        id: 333
-    }
+    const { title, content, author } = data
+    const createtime = Date.now()
+
+    const sql = `insert into blog (title, content, author, createtime ) 
+    values ('${title}','${content}','${author}','${createtime}') `
+    return exce(sql).then(insertData => {
+        console.log(insertData)
+        return {
+            id: insertData.insertId
+        }
+    })
 }
 
 const updateBlog = (id, data = {}) => {
-    return false
+    const { title, content } = data
+    const sql = `update blog set title='${title}', content='${content}' where id = ${id}`
+    return exce(sql).then(update => {
+        if(update.affectedRows > 0) {
+            return true
+        }
+        return false
+    })
 }
 
-const deleteBlogById = id => {
-    return true
+const deleteBlogById = (id, author) => {
+    const sql = `delete from blog where id = '${id}' and author = '${author}'`
+    return exce(sql)
 }
 module.exports = {
     getList,

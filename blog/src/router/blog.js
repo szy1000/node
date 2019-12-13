@@ -2,40 +2,52 @@ const { getList, getDetailById, createNewBlog, updateBlog, deleteBlogById } = re
 const { SuccessModel, ErrorModel } =require('../model/resModel')
 
 const handleBlogRouter = (req, res) => {
-    const { method, path, query, body, id } = req
+    const { method, path, query, body } = req
 
     if(method === 'GET' && path === '/api/blog/list') {
         const { author = '', keyword = '' } = query
-        const listData = getList(author, keyword)
-        return new SuccessModel(listData)
+        const result = getList(author, keyword)
+        return result.then(listData => {
+            return new SuccessModel(listData)
+        })
     }
 
     if(method === 'GET' && path === '/api/blog/detail') {
-        const detail = getDetailById(id)
-        return new SuccessModel(detail)
+        const result = getDetailById(query.id)
+        return result.then(data => {
+            return new SuccessModel(data)
+        })
     }
 
     if(method === 'POST' && path === '/api/blog/new') {
-        const id = createNewBlog(body)
-        return new SuccessModel(id)
+        const result = createNewBlog(body)
+        return result.then(data => {
+            return new SuccessModel(data)
+        })
     }
 
     if(method === 'POST' && path === '/api/blog/update') {
-        const flag = updateBlog(body)
-        if(flag) {
-            return new SuccessModel(flag)
-        } else {
-            return new ErrorModel('更新失败')
-        }
+        const result = updateBlog(query.id, body)
+        return result.then(val => {
+            if(val) {
+                return new SuccessModel(val)
+            } else {
+                return new ErrorModel('更新失败')
+            }
+        })
+
     }
 
     if(method === 'POST' && path === '/api/blog/delete') {
-        const flag = deleteBlogById(id)
-        if(flag) {
-            return new SuccessModel('删除成功')
-        } else {
-            return new ErrorModel('删除失败')
-        }
+        const result = deleteBlogById(query.id, body.author)
+        return result.then(res => {
+            if(res) {
+                return new SuccessModel('删除成功')
+            } else {
+                return new ErrorModel('删除失败')
+            }
+        })
+
     }
 }
 
