@@ -34,11 +34,25 @@ const serverHandle = (req, res) => {
 
     req.path = req.url.split('?')[0]
     req.query = queryString.parse(req.url.split('?')[1])
+
+    req.cookie = {}
+    const cookieStr = req.headers.cookie || ''
+    cookieStr.split(';').forEach(item => {
+        if(!item) {
+           return
+        }
+
+        const arr = item.split('=');
+        const key = arr[0]
+        const value = arr[1]
+        req.cookie[key] = value
+    })
+    console.log(req.cookie)
     postData(req).then(data => {
         req.body = data
 
-        const blogData = handleBlogRouter(req)
-        const userData = handleUserRouter(req)
+        const blogData = handleBlogRouter(req, res)
+        const userData = handleUserRouter(req, res)
         if(blogData) {
             blogData.then(data => {
                 res.end(JSON.stringify(data))
